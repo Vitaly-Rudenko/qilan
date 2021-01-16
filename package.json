@@ -1,0 +1,26 @@
+{
+  "name": "qilan",
+  "version": "0.0.1",
+  "description": "Smart JavaScript mocking framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine --config=spec/support/jasmine.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vitaly-rudenko/qilan.git"
+  },
+  "keywords": [
+    "javascript",
+    "mock",
+    "stub",
+    "unit-testing",
+    "test"
+  ],
+  "author": "Vitaly Rudenko",
+  "license": "GPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/vitaly-rudenko/qilan/issues"
+  },
+  "homepage": "https://github.com/vitaly-rudenko/qilan#readme"
+}
