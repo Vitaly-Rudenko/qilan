@@ -1,44 +1,81 @@
-# Qilan
+# Qilan concept
 
-## Idea
+## Mocks
 
-The concept is heavily inspired by Mockito and uses Proxy to track calls.
-
+### Creating a mock from a class
 ```js
 class Dog {
-	bark(loud) {}
-	generateBark(type) {}
-	get name() { return null; }
-	get surname() { return null; }
+	bark(type) { /* ... */ }
+	async woof() { /* ... */ }
 }
 
 const dog = mock(Dog);
-
-when(dog.name).return('Doggy');
-when(dog.surname).do(() => 'Doggo #' + Math.ceil(Math.random() * 100));
-
-when(dog.bark(false)).do(() => console.log('..silent bark..'));
-when(dog.bark(true)).do(() => console.log('Loud bark! Woof-woof!'));
-
-when(dog.generateBark()).do(() => 'woof!');
-when(dog.generateBark(any(String))).do(type => `${type} bark!`);
-
-// ---
-
-console.log('Full name:', dog.name, dog.surname); // Doggy Doggo #12
-console.log('Regular bark:', dog.generateBark()); // woof!
-console.log('Robotic bark:', dog.generateBark('robotic')); // robotic bark!
-
-dog.bark(false);
-dog.bark(true);
-
-// ---
-
-expect.called(dog.name);
-expect.calledOnce(dog.generateBark('robotic'));
-expect.calledTimes(2, dog.bark(any()));
-expect.notCalled(dog.bark(any(Number)));
-
-expect.notCalled(dog.bark(any(Boolean))); // fails
-expect.called(dog.generateBark('realistic')); // fails
 ```
+
+## Spies
+
+### Creating a spy
+```js
+const bark = spy();
+const woof = when().resolve();
+
+const meow = when(() => spy()).do('m-m-meow');
+const purr = when(() => spy('purr?')).return('purr!');
+```
+
+### Spying on all methods & properties
+```js
+spy(dog);
+```
+
+## Custom behavior
+
+### Simple
+
+```js
+when(() => dog.name).return('Cooper');
+when(() => dog.bark()).do(() => console.log('bark!'));
+```
+
+### Multiple calls
+
+```js
+when(() => dog.name).return('Cooper', 'Baxter');
+when(() => dog.bark()).do(
+	() => console.log('first bark!'),
+	() => console.log('second bark!'),
+);
+```
+```js
+when(() => dog.name).returnOnce('Cooper');
+when(() => dog.bark()).doOnce(() => console.log('bark!');
+```
+
+### Arguments
+
+```js
+when(() => cat.meow()).do(type => 'meow');
+when(() => cat.meow(anyArgs())).do(type => 'm-m-meow');
+
+when(() => dog.bark(any(String))).do(type => `${type} bark!`);
+when(() => dog.bark(any(Number))).do(count => `bark #${count}!`);
+```
+
+## Expectations
+
+### Equality assertion
+
+```js
+same(dog.breed, 'Doge');
+equal(dog.age, any(Number));
+```
+
+### Call expectations
+
+```js
+called(() => dog.bark(anyArgs()));
+calledOnce(() => dog.woof());
+calledTimes(5, () => cat.meow(true));
+notCalled(() => cat.purr(any(String), any()));
+```
+
