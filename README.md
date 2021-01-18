@@ -42,13 +42,23 @@ when(() => dog.bark()).do(() => console.log('bark!'));
 ```js
 when(() => dog.name).return('Cooper', 'Baxter');
 when(() => dog.bark()).do(
+	() => console.log('odd bark!'),
+	() => console.log('even bark!'),
+);
+
+console.log(dog.name, dog.name, dog.name); // Cooper Baxter Cooper
+console.log(dog.bark(), dog.bark(), dog.bark()); // odd bark! even bark! odd bark!
+```
+
+```js
+when(() => dog.name).returnOnce('Cooper', 'Baxter');
+when(() => dog.bark()).doOnce(
 	() => console.log('first bark!'),
 	() => console.log('second bark!'),
 );
-```
-```js
-when(() => dog.name).returnOnce('Cooper');
-when(() => dog.bark()).doOnce(() => console.log('bark!');
+
+console.log(dog.name, dog.name, dog.name); // Cooper Baxter undefined
+console.log(dog.bark(), dog.bark(), dog.bark()); // first bark! second bark! undefined
 ```
 
 ### Arguments
